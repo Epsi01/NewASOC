@@ -231,6 +231,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\ComponentViewModel.cs" />
+    <Compile Include="ViewModels\CostViewModel.cs" />
     <Compile Include="ViewModels\CurrentStatusViewModel.cs" />
     <Compile Include="ViewModels\ModelViewModel.cs" />
     <Compile Include="ViewModels\PriceViewModel.cs" />
