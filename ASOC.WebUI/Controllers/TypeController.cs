@@ -48,12 +48,20 @@ namespace ASOC.WebUI.Controllers
             }
             Entities db = new Entities();
             return View(db.TYPE.ToList());
-        }     
+        }
+
+        public ActionResult Amount(int? id)
+        {
+            if (id != null)
+                return RedirectToAction("Index", "Component", new { typeID = id });
+            else
+                return HttpNotFound();
+        }
+
 
         // GET: Delete
         public ActionResult Delete(int? id)
-        {
-           
+        {           
             if (id == null)
             {
                 return HttpNotFound();

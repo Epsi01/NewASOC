@@ -17,5 +17,8 @@ namespace ASOC.WebUI.ViewModels
         public int currentType { get; set; }
         public decimal currentCoast { get; set; }
         public decimal oldCoast { get; set; }
+        public int maxPrice { get; set; }
+        public int minPrice { get; set; }
+        public IPagedList<PRICE> priceList { get; set; }
     }
 }

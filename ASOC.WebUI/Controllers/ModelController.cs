@@ -5,6 +5,7 @@ using PagedList;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 
@@ -27,10 +28,8 @@ namespace ASOC.WebUI.Controllers
         }
 
         // GET: Role
-        public ActionResult Index(int? page, ModelViewModel modelData)
-        {
-            if (ModelState.IsValid)
-            {
+        public ActionResult Index(int? page, ModelViewModel modelData, string price)
+        {            
                 if (modelData.searchString != null)
                 {
                     page = 1;
@@ -42,7 +41,7 @@ namespace ASOC.WebUI.Controllers
 
                 modelData.currentFilter = modelData.searchString;
 
-                var models = modelRepository.GetAllList();
+                var models = modelRepository.GetAllList();               
                 decimal searchDigit;
                 bool isInt = Decimal.TryParse(modelData.searchString, out searchDigit);
 
@@ -58,7 +57,7 @@ namespace ASOC.WebUI.Controllers
                 {
                     var type = typeRepository.GetAllList().First(m => m.ID.Equals(modelData.ID_TYPE));
                     models = models.Where(s => s.TYPE.NAME.Contains(type.NAME)).OrderBy(s => s.NAME);
-                }
+                }                
 
                 int pageSize = 10;
                 int pageNumber = (page ?? 1);
@@ -78,30 +77,83 @@ namespace ASOC.WebUI.Controllers
                         currentCoast = item.PRICE.Where(x => x.ID_MODEL.Equals(item.ID))
                             .OrderByDescending(x => x.DATE_ADD).FirstOrDefault().COAST
                     });
-                }
+                }                           
+               
 
-                if (!String.IsNullOrEmpty(modelData.searchString))
+               int min = Convert.ToInt32(modelList.Min(m => m.currentCoast));
+               int max = Convert.ToInt32(modelList.Max(m => m.currentCoast));
+
+            if (!String.IsNullOrEmpty(modelData.searchString))
                 {
                     if (isInt)
                     {
                         modelList = modelList.FindAll(m => m.currentCoast.Equals(searchDigit));
                     }
                 }
+            //Проверка на слайдер 
+            if (price != null && price != "")
+            {
+                String[] numbers = price.Split(new char[] { '-' }, StringSplitOptions.RemoveEmptyEntries);
+                decimal num1 = Convert.ToDecimal(numbers[0]);
+                decimal num2 = Convert.ToDecimal(numbers[1]);
+                modelList = modelList.FindAll(m => m.currentCoast <= num2);
+                modelList = modelList.FindAll(m => m.currentCoast >= num1);
+            }
 
-                ModelViewModel model = new ModelViewModel
+
+
+            ModelViewModel model = new ModelViewModel
                 {
                     modelList = modelList.ToPagedList(pageNumber, pageSize),
                     typeList = getList.getTypeSelectList(),
                     searchString = modelData.searchString,
                     currentFilter = modelData.currentFilter,
-                    ID_TYPE = modelData.ID_TYPE
+                    ID_TYPE = modelData.ID_TYPE,
+                    maxPrice = max,
+                    minPrice = min 
                 };
-                return View(model);
+                return View(model);                    
+        }
+
+        public ActionResult ModelLog(int? id)
+        {
+            if (id != null)
+                return RedirectToAction("Index", "Price", new { modelID = id });
+            else
+                return HttpNotFound();
+        }
+
+        public ActionResult Amount(int? id)
+        {            
+            if (id != null)
+                return RedirectToAction("Index", "Component", new { modelID = id });
+            else
+                return HttpNotFound();
+        }
+
+        public ActionResult Details(int? page,int? id)
+        {
+            int pageSize = 10;
+            int pageNumber = (page ?? 1);
+
+            if (id==null)
+            {
+                return HttpNotFound();
             }
+            MODEL model = modelRepository.GetAllList().First(x => x.ID.Equals(Convert.ToDecimal(id)));
 
-            Entities db = new Entities();
-
-            return View(db.MODEL.ToList());
+            ModelViewModel modelData = new ModelViewModel
+            {
+                ID = model.ID,
+                ID_TYPE = model.ID_TYPE,
+                NAME = model.NAME,
+                TYPE = model.TYPE,
+                currentCoast = model.PRICE.Where(x => x.ID_MODEL.Equals(model.ID))
+                       .OrderByDescending(x => x.DATE_ADD).FirstOrDefault().COAST,
+                PRICE = model.PRICE,
+                priceList = model.PRICE.ToPagedList(pageNumber, pageSize)
+            };
+            return View(modelData);
         }
 
         [HttpGet]

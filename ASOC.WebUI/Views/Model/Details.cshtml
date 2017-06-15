@@ -1,0 +1,57 @@
+﻿@using PagedList.Mvc
+@model ASOC.WebUI.ViewModels.ModelViewModel
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Подробнее</h2>
+
+<div>
+
+    <hr />
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active"><a href="#tab1" role="tab" data-toggle="tab">Изменение цен модели</a></li>
+        <li role="presentation"><a href="#tab2" role="tab" data-toggle="tab">Информация о модели</a></li>
+    </ul>
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="tab1">
+            <table class="table table-responsive table-bordered">    
+                <tr class="header">
+                    <td><p>Цена</p></td>
+                    <td><p>Дата</p></td>
+                </tr>
+                @foreach (var item in Model.priceList)
+                {
+                    <tr>
+                        <td>@item.COAST</td>
+                        <td>@item.DATE_ADD</td>
+                    </tr>
+                }                                     
+            </table>
+            Посмотреть информацию в  @Html.ActionLink("журнале", "ModelLog", new { id = Model.ID })
+            @Html.PagedListPager(Model.priceList, page => Url.Action("Details", new { page }))
+        </div>
+        <div role="tabpanel" class="tab-pane" id="tab2">
+            <table class="table table-responsive table-bordered">
+                <tr>
+                    <td><p>Название</p></td>
+                    <td><p> @Html.DisplayFor(model => model.NAME)</p></td>
+                </tr>
+
+                <tr>
+                    <td><p>Тип</p></td>
+                    <td><p>@Html.DisplayFor(model => model.TYPE.NAME)</p></td>
+                </tr>
+
+                <tr>
+                    <td><p>Текущая цена</p></td>
+                    <td><p>@Html.DisplayFor(model => model.currentCoast)</p></td>
+                </tr>                 
+            </table>          
+        </div>
+    </div>
+</div>
+<p>
+    @Html.ActionLink("Назад", "Index")
+</p>

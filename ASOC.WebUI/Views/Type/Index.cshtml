@@ -8,7 +8,6 @@
 
 <h2>Типы</h2>
 <p> @Html.ActionLink("Создать", "Create") </p>
-
 @using (Html.BeginForm("Index", "Type", FormMethod.Get))
 {
     <div class="row" id="find">
@@ -39,7 +38,7 @@
             </td>
 
               <td>
-          <span class="label label-pill label-info">@item.COMPONENT.Count()</span>
+          <span class="label label-pill label-info">@Html.ActionLink(@item.COMPONENT.Count().ToString(), "Amount", new { id = item.ID })</span>
             </td>
 
             <td>

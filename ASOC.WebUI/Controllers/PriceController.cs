@@ -20,7 +20,7 @@ namespace ASOC.WebUI.Controllers
         }
 
         // GET: Index
-        public ActionResult Index(int? page, PriceViewModel modelData)
+        public ActionResult Index(int? page, PriceViewModel modelData, int? modelID, string price)
         {
             if (modelData.searchString != null)
             {
@@ -33,7 +33,23 @@ namespace ASOC.WebUI.Controllers
 
             modelData.currentFilter = modelData.searchString;
 
-            IEnumerable<PRICE> priceLog = priceRepository.GetAllList();           
+            IEnumerable<PRICE> priceLog = priceRepository.GetAllList();
+
+            int min = Convert.ToInt32(priceLog.Min(m => m.COAST));
+            int max = Convert.ToInt32(priceLog.Max(m => m.COAST));
+
+            //Проверка на слайдер 
+            if (price != null && price != "")
+            {
+                String[] numbers = price.Split(new char[] { '-' }, StringSplitOptions.RemoveEmptyEntries);
+                decimal num1 = Convert.ToDecimal(numbers[0]);
+                decimal num2 = Convert.ToDecimal(numbers[1]);
+                priceLog = priceLog.Where(m => m.COAST <= num2);
+                priceLog = priceLog.Where(m => m.COAST >= num1);
+            }
+
+            if (modelID != null)
+                priceLog = priceLog.Where(m => m.ID_MODEL.Equals(Convert.ToDecimal(modelID)));
 
             if (!String.IsNullOrEmpty(modelData.searchString))
             {
@@ -66,7 +82,9 @@ namespace ASOC.WebUI.Controllers
                 currentFilter = modelData.currentFilter, 
                 searchString = modelData.searchString,
                 firstDate = modelData.firstDate,
-                secondDate = modelData.secondDate
+                secondDate = modelData.secondDate,
+                minPrice = min,
+                maxPrice = max
             };
             return View(model);
         }
@@ -96,6 +114,49 @@ namespace ASOC.WebUI.Controllers
             priceRepository.Delete(id);
             priceRepository.Save();
             return RedirectToAction("Index");
+        }
+
+        public ActionResult Create()
+        {
+            return View();
         }        
+
+        [HttpPost]
+        public ActionResult Create(PRICE price)
+        {
+            if (ModelState.IsValid)
+            {
+                priceRepository.Create(price);
+                priceRepository.Save();
+                return RedirectToAction("Index");
+            }
+            return View(price);
+        }
+
+        public ActionResult Edit(int? id)
+        {
+            if (id == null)
+            {
+                return HttpNotFound();
+            }
+            PRICE price = priceRepository.GetAllList().First(x => x.ID.Equals(Convert.ToDecimal(id)));
+            if (price == null)
+            {
+                return HttpNotFound();
+            }
+            return View(price);
+        }
+
+        [HttpPost]
+        public ActionResult Edit(PRICE price)
+        {
+            if (ModelState.IsValid)
+            {
+                priceRepository.Update(price);
+                priceRepository.Save();
+                return RedirectToAction("Index");
+            }
+            return View(price);
+        }
     }
 }

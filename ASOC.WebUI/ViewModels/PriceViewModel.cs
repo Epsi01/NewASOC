@@ -14,5 +14,7 @@ namespace ASOC.WebUI.ViewModels
         public Nullable<DateTime> firstDate { get; set; }
         public Nullable<DateTime> secondDate { get; set; }
         public IPagedList<PRICE> priceList { get; set; }
+        public int maxPrice { get; set; }
+        public int minPrice { get; set; }
     }
 }

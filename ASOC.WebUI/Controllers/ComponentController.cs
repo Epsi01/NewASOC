@@ -25,9 +25,6 @@ namespace ASOC.WebUI.Controllers
             statusRepository = statusRepositoryParam;
         }
 
-
-
-
         public ActionResult Details(int? id)
         {
 
@@ -67,7 +64,7 @@ namespace ASOC.WebUI.Controllers
 
 
         // GET: Index                  
-        public ActionResult Index(int? page, ComponentViewModel modelData)
+        public ActionResult Index(int? page, ComponentViewModel modelData, int? modelID, int? typeID)
         {
             if (modelData.searchString != null)
             {
@@ -80,12 +77,17 @@ namespace ASOC.WebUI.Controllers
 
             modelData.currentFilter = modelData.searchString;
 
-            var components = componentRepository.GetAllList();
+            var components = componentRepository.GetAllList();         
 
             if (modelData.ID_TYPE != null)
             {
                 components = components.Where(s => s.ID_TYPE.Equals(modelData.ID_TYPE));
-            }           
+            }
+
+            if (modelID != null)
+                components = components.Where(s => s.MODEL.ID.Equals(Convert.ToDecimal(modelID)));
+            if (typeID != null)
+                components = components.Where(s => s.ID_TYPE.Equals(Convert.ToDecimal(typeID)));
 
             decimal searchDigit;
             bool isInt = Decimal.TryParse(modelData.searchString, out searchDigit);
