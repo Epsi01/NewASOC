@@ -20,7 +20,7 @@ namespace ASOC.WebUI.Controllers
         }
 
         // GET: Index
-        public ActionResult Index(int? page, CurrentStatusViewModel modelData)
+        public ActionResult Index(int? page, CurrentStatusViewModel modelData, int? componentID)
         {
             if (modelData.searchString != null)
             {
@@ -34,6 +34,9 @@ namespace ASOC.WebUI.Controllers
             modelData.currentFilter = modelData.searchString;
 
             IEnumerable<CURRENT_STATUS> CurLog = currentStatusRepository.GetAllList();
+
+            if(componentID!=null)
+                CurLog = CurLog.Where(m => m.ID_COMPLECT.Equals(Convert.ToDecimal(componentID)));
 
             if (!String.IsNullOrEmpty(modelData.searchString))
             {

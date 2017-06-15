@@ -1,8 +1,55 @@
-﻿
+﻿@model ASOC.Domain.COMPONENT
+
 @{
     ViewBag.Title = "Delete";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Delete</h2>
+<h2>Удалить</h2>
 
+<h3>Вы действительно хотите удалить?</h3>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Серийный номер
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ID_SERIES)
+        </dd>
+        <dt>
+            Дата
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DATE_ADD)
+        </dd>
+        <dt>
+            Модель
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.MODEL.NAME)
+        </dd>
+        <dt>
+            Тип
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.TYPE.NAME)
+        </dd>
+        <dt>
+            Партнамбер
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PARTNUMBER)
+        </dd>      
+    </dl>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Удалить" class="btn btn-default" /> |
+            @Html.ActionLink("Назад", "Index")
+        </div>
+    }
+</div>

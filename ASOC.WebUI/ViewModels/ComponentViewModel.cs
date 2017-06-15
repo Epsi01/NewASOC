@@ -20,6 +20,7 @@ namespace ASOC.WebUI.ViewModels
         public SelectList typeList { get; set; }
         public SelectList statusList { get; set; }
         public IPagedList<ComponentViewModel> componentList { get; set; }
+        public IPagedList<CURRENT_STATUS> currentStatusList { get; set; }
         public SelectList listType { get; set; }
         public SelectList listModel { get; set; }
     }

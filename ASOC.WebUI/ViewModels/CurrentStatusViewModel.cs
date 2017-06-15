@@ -17,7 +17,6 @@ namespace ASOC.WebUI.ViewModels
         public Nullable<DateTime> firstDate { get; set; }
         public Nullable<DateTime> secondDate { get; set; }
         public IPagedList<CURRENT_STATUS> CurList { get; set; }
-
         // не хорошо
         public IEnumerable<decimal> Costs { get; set; }
         public void GetCosts (ref CURRENT_STATUS cs)

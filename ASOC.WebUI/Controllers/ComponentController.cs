@@ -16,28 +16,30 @@ namespace ASOC.WebUI.Controllers
         IRepository<COMPONENT> componentRepository;
         IGetList getList;
         IRepository<CURRENT_STATUS> statusRepository;
+        IRepository<MODEL> modelRepository;
 
         public ComponentController(IRepository<COMPONENT> componentRepositoryParam, IGetList getListParam,
-            IRepository<CURRENT_STATUS> statusRepositoryParam)
+            IRepository<CURRENT_STATUS> statusRepositoryParam, IRepository<MODEL> modelRepositoryParam)
         {
             componentRepository = componentRepositoryParam;
             getList = getListParam;
             statusRepository = statusRepositoryParam;
+            modelRepository = modelRepositoryParam;
         }
 
-        public ActionResult Details(int? id)
+        public ActionResult Details(int? page,int? id)
         {
+            int pageSize = 10;
+            int pageNumber = (page ?? 1);
 
             if (id == null)
             {
                 return HttpNotFound();
             }
 
-
             Entities db = new Entities();
             //COMPONENT comp = componentRepository.GetAllList().First(x => x.ID.Equals(id));
             COMPONENT comp = db.COMPONENT.Find(Convert.ToDecimal(id));
-
 
             var n = new ComponentViewModel()
             {
@@ -52,13 +54,21 @@ namespace ASOC.WebUI.Controllers
                 currentStatus = comp.CURRENT_STATUS.Where(x => x.ID_COMPLECT.Equals(Convert.ToDecimal(id)))
                         .OrderByDescending(x => x.DATE_STATUS).FirstOrDefault().STATUS.NAME,
                 currentCoast = comp.MODEL.PRICE.Where(x => x.ID_MODEL.Equals(Convert.ToDecimal(comp.ID_MODEL)))
-                        .OrderByDescending(x => x.DATE_ADD).FirstOrDefault().COAST
-
+                        .OrderByDescending(x => x.DATE_ADD).FirstOrDefault().COAST,
+                currentStatusList = comp.CURRENT_STATUS.ToPagedList(pageNumber, pageSize),
+                ID = comp.ID
             };
 
             return View(n);
 
 
+        }
+        public ActionResult StatusLog(int? id)
+        {
+            if (id != null)
+                return RedirectToAction("Index", "CurrentStatus", new { componentID = id });
+            else
+                return HttpNotFound();
         }
 
 
@@ -126,7 +136,8 @@ namespace ASOC.WebUI.Controllers
                         .OrderByDescending(x => x.DATE_STATUS).FirstOrDefault().STATUS.NAME,
                     MODEL = item.MODEL,
                     TYPE = item.TYPE,
-                    
+                    currentCoast = item.MODEL.PRICE.Where(x => x.ID_MODEL.Equals(item.ID_MODEL))
+                            .OrderByDescending(x => x.DATE_ADD).FirstOrDefault().COAST
                 });
             }
 
@@ -221,22 +232,19 @@ namespace ASOC.WebUI.Controllers
         // GET: Delete
         public ActionResult Delete(int? id)
         {
-
             if (id == null)
             {
                 return HttpNotFound();
             }
 
-            COMPONENT component = componentRepository.GetAllList().FirstOrDefault(x => x.ID.Equals(id));
+            COMPONENT component = componentRepository.GetAllList().FirstOrDefault(x => x.ID.Equals(Convert.ToDecimal(id)));
 
             if (component == null)
             {
                 return HttpNotFound();
             }
             return View(component);
-        }
-
-   
+        }   
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -295,36 +303,43 @@ namespace ASOC.WebUI.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(ComponentViewModel l)
+        public ActionResult Create(ComponentViewModel modelData)
         {
-            Entities db = new Entities();
-
-            //componentRepository.Create(l);
-
-            db.Entry(new CURRENT_STATUS()
+            if (ModelState.IsValid)
             {
-                ID = l.ID,
-                ID_COMPLECT = l.ID,
-                ID_STATUS = Convert.ToDecimal(l.listStatus),
-                DATE_STATUS = DateTime.Now
-            }).State = EntityState.Added;
+                MODEL model = modelRepository.GetAllList().
+                    First(m => m.NAME.Equals(modelData.MODEL.NAME) && m.ID_TYPE.Equals(modelData.ID_TYPE));
 
-            db.Entry(
-                new COMPONENT()
+                COMPONENT component = new COMPONENT()
                 {
-                    ID = l.ID,
-                    ID_MODEL = l.ID_MODEL,
-                    ID_SERIES = l.ID_SERIES,
-                    ID_TYPE = l.ID_TYPE,
-                    PARTNUMBER = l.PARTNUMBER,
-                    DATE_ADD = l.DATE_ADD
-                }
-                ).State = EntityState.Added;
+                    DATE_ADD = modelData.DATE_ADD,
+                    ID_MODEL = Convert.ToDecimal(model.ID),
+                    ID_TYPE = Convert.ToDecimal(modelData.ID_TYPE),
+                    ID_SERIES = Convert.ToString(modelData.ID_SERIES),
+                    PARTNUMBER = modelData.PARTNUMBER                    
+                };
+
+                componentRepository.Create(component);
+                componentRepository.Save();
+
+                COMPONENT currentComponent = componentRepository.GetAllList().First(m => m.ID_MODEL.Equals(model.ID)
+                        && m.ID_SERIES.Equals(modelData.ID_SERIES) && m.ID_TYPE.Equals(modelData.ID_TYPE));
 
 
-            db.SaveChanges();
+                CURRENT_STATUS currentStatus = new CURRENT_STATUS()
+                {
+                    DATE_STATUS = Convert.ToDateTime(modelData.DATE_ADD),
+                    ID_COMPLECT = Convert.ToDecimal(currentComponent.ID),
+                    ID_STATUS = Convert.ToDecimal(modelData.currentStatus)                    
+                };
 
-            return RedirectToAction("Index");
+                statusRepository.Create(currentStatus);
+                statusRepository.Save();
+
+                return RedirectToAction("Index");
+            }
+            else
+                return HttpNotFound();
         }
 
     }
