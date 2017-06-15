@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="Хранилище Model" Provider="Oracle.ManagedDataAccess.Client" ProviderManifestToken="11.2" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="Model.Store" Provider="Oracle.ManagedDataAccess.Client" ProviderManifestToken="11.2" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="COMPONENT">
           <Key>
             <PropertyRef Name="ID" />
@@ -14,23 +14,22 @@
           <Property Name="ID_TYPE" Type="number" Precision="38" Scale="0" />
           <Property Name="DATE_ADD" Type="date" />
           <Property Name="PARTNUMBER" Type="varchar2" MaxLength="200" />
-          <Property Name="ID" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ID" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="CURRENT_STATUS">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ID" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="ID_COMPLECT" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="ID_STATUS" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATE_STATUS" Type="date" Nullable="false" />
-          <Property Name="REASON" Type="varchar2" MaxLength="200" />
         </EntityType>
         <EntityType Name="MODEL">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ID" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="NAME" Type="varchar2" MaxLength="200" />
           <Property Name="ID_TYPE" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
@@ -38,7 +37,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ID" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="ID_MODEL" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATE_ADD" Type="date" Nullable="false" />
           <Property Name="COAST" Type="number" Precision="38" Scale="0" Nullable="false" />
@@ -47,22 +46,23 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ID" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="NAME" Type="varchar2" MaxLength="20" />
         </EntityType>
         <EntityType Name="STATUS_COSTS">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ID" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="ID_CURRENT" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="COSTS" Type="varchar2" MaxLength="200" />
+          <Property Name="COSTS" Type="number" Precision="38" Scale="0" />
+          <Property Name="REASON" Type="varchar2" MaxLength="200" />
         </EntityType>
         <EntityType Name="TYPE">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ID" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="NAME" Type="varchar2" MaxLength="200" />
         </EntityType>
         <Association Name="COMPONENT_MODEL_FK">
@@ -153,7 +153,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="Хранилище ModelContainer">
+        <EntityContainer Name="ModelStoreContainer">
           <EntitySet Name="COMPONENT" EntityType="Self.COMPONENT" Schema="ROOT" store:Type="Tables" />
           <EntitySet Name="CURRENT_STATUS" EntityType="Self.CURRENT_STATUS" Schema="ROOT" store:Type="Tables" />
           <EntitySet Name="MODEL" EntityType="Self.MODEL" Schema="ROOT" store:Type="Tables" />
@@ -204,7 +204,7 @@
           <Property Name="ID_TYPE" Type="Decimal" Precision="38" Scale="0" />
           <Property Name="DATE_ADD" Type="DateTime" />
           <Property Name="PARTNUMBER" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <Property Name="ID" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <NavigationProperty Name="MODEL" Relationship="Self.COMPONENT_MODEL_FK" FromRole="COMPONENT" ToRole="MODEL" />
           <NavigationProperty Name="TYPE" Relationship="Self.COMPONENT_TYPE_FK" FromRole="COMPONENT" ToRole="TYPE" />
           <NavigationProperty Name="CURRENT_STATUS" Relationship="Self.CURRENT_STATUS_COMPONENT" FromRole="COMPONENT" ToRole="CURRENT_STATUS" />
@@ -213,11 +213,10 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="ID_COMPLECT" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="ID_STATUS" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATE_STATUS" Type="DateTime" Nullable="false" />
-          <Property Name="REASON" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="COMPONENT" Relationship="Self.CURRENT_STATUS_COMPONENT" FromRole="CURRENT_STATUS" ToRole="COMPONENT" />
           <NavigationProperty Name="STATUS" Relationship="Self.CURRENT_STATUS_STATUS" FromRole="CURRENT_STATUS" ToRole="STATUS" />
           <NavigationProperty Name="STATUS_COSTS" Relationship="Self.STATUS_REASON_CURRENT" FromRole="CURRENT_STATUS" ToRole="STATUS_COSTS" />
@@ -226,7 +225,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="NAME" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="ID_TYPE" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <NavigationProperty Name="COMPONENT" Relationship="Self.COMPONENT_MODEL_FK" FromRole="MODEL" ToRole="COMPONENT" />
@@ -237,7 +236,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="ID_MODEL" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATE_ADD" Type="DateTime" Nullable="false" />
           <Property Name="COAST" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
@@ -247,7 +246,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="NAME" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="CURRENT_STATUS" Relationship="Self.CURRENT_STATUS_STATUS" FromRole="STATUS" ToRole="CURRENT_STATUS" />
         </EntityType>
@@ -255,16 +254,17 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="ID_CURRENT" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="COSTS" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="COSTS" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="REASON" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="CURRENT_STATUS" Relationship="Self.STATUS_REASON_CURRENT" FromRole="STATUS_COSTS" ToRole="CURRENT_STATUS" />
         </EntityType>
         <EntityType Name="TYPE">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="NAME" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="COMPONENT" Relationship="Self.COMPONENT_TYPE_FK" FromRole="TYPE" ToRole="COMPONENT" />
           <NavigationProperty Name="MODEL" Relationship="Self.MODEL_TYPE_FK" FromRole="TYPE" ToRole="MODEL" />
@@ -399,7 +399,7 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="Хранилище ModelContainer" CdmEntityContainer="Entities">
+        <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="Entities">
           <EntitySetMapping Name="COMPONENT">
             <EntityTypeMapping TypeName="Model.COMPONENT">
               <MappingFragment StoreEntitySet="COMPONENT">
@@ -419,7 +419,6 @@
                 <ScalarProperty Name="ID_COMPLECT" ColumnName="ID_COMPLECT" />
                 <ScalarProperty Name="ID_STATUS" ColumnName="ID_STATUS" />
                 <ScalarProperty Name="DATE_STATUS" ColumnName="DATE_STATUS" />
-                <ScalarProperty Name="REASON" ColumnName="REASON" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -456,6 +455,7 @@
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="ID_CURRENT" ColumnName="ID_CURRENT" />
                 <ScalarProperty Name="COSTS" ColumnName="COSTS" />
+                <ScalarProperty Name="REASON" ColumnName="REASON" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -484,7 +484,7 @@
         <DesignerProperty Name="EnablePluralization" Value="false" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
         <DesignerProperty Name="UseLegacyProvider" Value="false" />
-        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
       </DesignerInfoPropertySet>
     </Options>
     <!-- Diagram content (shape and connector positions) -->

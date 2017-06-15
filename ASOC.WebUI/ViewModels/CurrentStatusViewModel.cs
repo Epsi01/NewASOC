@@ -19,7 +19,7 @@ namespace ASOC.WebUI.ViewModels
         public IPagedList<CURRENT_STATUS> CurList { get; set; }
 
         // не хорошо
-        public IEnumerable<string> Costs { get; set; }
+        public IEnumerable<decimal> Costs { get; set; }
         public void GetCosts (ref CURRENT_STATUS cs)
         {
 
@@ -32,9 +32,7 @@ namespace ASOC.WebUI.ViewModels
                         ID_CURRENT = ID,
                         COSTS = item
                 });
-                }
-                
-
+                }              
             }
         }
         public string reasonCur { get; set; }
