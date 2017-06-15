@@ -17,7 +17,7 @@ namespace ASOC.Domain
         public decimal ID { get; set; }
         public decimal ID_MODEL { get; set; }
         public System.DateTime DATE_ADD { get; set; }
-        public decimal COAST { get; set; }
+        public decimal COST { get; set; }
     
         public virtual MODEL MODEL { get; set; }
     }

@@ -24,6 +24,7 @@
           <Property Name="ID_COMPLECT" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="ID_STATUS" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATE_STATUS" Type="date" Nullable="false" />
+          <Property Name="REASON" Type="varchar2" MaxLength="200" />
         </EntityType>
         <EntityType Name="MODEL">
           <Key>
@@ -40,7 +41,7 @@
           <Property Name="ID" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="ID_MODEL" Type="number" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATE_ADD" Type="date" Nullable="false" />
-          <Property Name="COAST" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="COST" Type="number" Precision="38" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="STATUS">
           <Key>
@@ -53,10 +54,10 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="ID" Type="number" Precision="38" Scale="0" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="ID_CURRENT" Type="number" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="COSTS" Type="number" Precision="38" Scale="0" />
-          <Property Name="REASON" Type="varchar2" MaxLength="200" />
+          <Property Name="PRICE" Type="number" Precision="38" Scale="0" />
+          <Property Name="COSTS" Type="varchar2" MaxLength="200" />
         </EntityType>
         <EntityType Name="TYPE">
           <Key>
@@ -66,7 +67,9 @@
           <Property Name="NAME" Type="varchar2" MaxLength="200" />
         </EntityType>
         <Association Name="COMPONENT_MODEL_FK">
-          <End Role="MODEL" Type="Self.MODEL" Multiplicity="0..1" />
+          <End Role="MODEL" Type="Self.MODEL" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="COMPONENT" Type="Self.COMPONENT" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="MODEL">
@@ -78,7 +81,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="COMPONENT_TYPE_FK">
-          <End Role="TYPE" Type="Self.TYPE" Multiplicity="0..1" />
+          <End Role="TYPE" Type="Self.TYPE" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="COMPONENT" Type="Self.COMPONENT" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="TYPE">
@@ -90,7 +95,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="CURRENT_STATUS_COMPONENT">
-          <End Role="COMPONENT" Type="Self.COMPONENT" Multiplicity="1" />
+          <End Role="COMPONENT" Type="Self.COMPONENT" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="CURRENT_STATUS" Type="Self.CURRENT_STATUS" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="COMPONENT">
@@ -102,7 +109,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="CURRENT_STATUS_STATUS">
-          <End Role="STATUS" Type="Self.STATUS" Multiplicity="1" />
+          <End Role="STATUS" Type="Self.STATUS" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="CURRENT_STATUS" Type="Self.CURRENT_STATUS" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="STATUS">
@@ -217,6 +226,7 @@
           <Property Name="ID_COMPLECT" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="ID_STATUS" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATE_STATUS" Type="DateTime" Nullable="false" />
+          <Property Name="REASON" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="COMPONENT" Relationship="Self.CURRENT_STATUS_COMPONENT" FromRole="CURRENT_STATUS" ToRole="COMPONENT" />
           <NavigationProperty Name="STATUS" Relationship="Self.CURRENT_STATUS_STATUS" FromRole="CURRENT_STATUS" ToRole="STATUS" />
           <NavigationProperty Name="STATUS_COSTS" Relationship="Self.STATUS_REASON_CURRENT" FromRole="CURRENT_STATUS" ToRole="STATUS_COSTS" />
@@ -239,7 +249,7 @@
           <Property Name="ID" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ID_MODEL" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <Property Name="DATE_ADD" Type="DateTime" Nullable="false" />
-          <Property Name="COAST" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="COST" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
           <NavigationProperty Name="MODEL" Relationship="Self.PRICE_FK1" FromRole="PRICE" ToRole="MODEL" />
         </EntityType>
         <EntityType Name="STATUS">
@@ -254,10 +264,10 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="ID" Type="Decimal" Precision="38" Scale="0" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ID_CURRENT" Type="Decimal" Precision="38" Scale="0" Nullable="false" />
-          <Property Name="COSTS" Type="Decimal" Precision="38" Scale="0" />
-          <Property Name="REASON" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="PRICE" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="COSTS" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="CURRENT_STATUS" Relationship="Self.STATUS_REASON_CURRENT" FromRole="STATUS_COSTS" ToRole="CURRENT_STATUS" />
         </EntityType>
         <EntityType Name="TYPE">
@@ -270,7 +280,9 @@
           <NavigationProperty Name="MODEL" Relationship="Self.MODEL_TYPE_FK" FromRole="TYPE" ToRole="MODEL" />
         </EntityType>
         <Association Name="COMPONENT_MODEL_FK">
-          <End Role="MODEL" Type="Self.MODEL" Multiplicity="0..1" />
+          <End Role="MODEL" Type="Self.MODEL" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="COMPONENT" Type="Self.COMPONENT" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="MODEL">
@@ -282,7 +294,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="COMPONENT_TYPE_FK">
-          <End Role="TYPE" Type="Self.TYPE" Multiplicity="0..1" />
+          <End Role="TYPE" Type="Self.TYPE" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="COMPONENT" Type="Self.COMPONENT" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="TYPE">
@@ -294,7 +308,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="CURRENT_STATUS_COMPONENT">
-          <End Role="COMPONENT" Type="Self.COMPONENT" Multiplicity="1" />
+          <End Role="COMPONENT" Type="Self.COMPONENT" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="CURRENT_STATUS" Type="Self.CURRENT_STATUS" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="COMPONENT">
@@ -306,7 +322,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="CURRENT_STATUS_STATUS">
-          <End Role="STATUS" Type="Self.STATUS" Multiplicity="1" />
+          <End Role="STATUS" Type="Self.STATUS" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="CURRENT_STATUS" Type="Self.CURRENT_STATUS" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="STATUS">
@@ -419,6 +437,7 @@
                 <ScalarProperty Name="ID_COMPLECT" ColumnName="ID_COMPLECT" />
                 <ScalarProperty Name="ID_STATUS" ColumnName="ID_STATUS" />
                 <ScalarProperty Name="DATE_STATUS" ColumnName="DATE_STATUS" />
+                <ScalarProperty Name="REASON" ColumnName="REASON" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -437,7 +456,7 @@
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="ID_MODEL" ColumnName="ID_MODEL" />
                 <ScalarProperty Name="DATE_ADD" ColumnName="DATE_ADD" />
-                <ScalarProperty Name="COAST" ColumnName="COAST" />
+                <ScalarProperty Name="COST" ColumnName="COST" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -454,8 +473,8 @@
               <MappingFragment StoreEntitySet="STATUS_COSTS">
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="ID_CURRENT" ColumnName="ID_CURRENT" />
+                <ScalarProperty Name="PRICE" ColumnName="PRICE" />
                 <ScalarProperty Name="COSTS" ColumnName="COSTS" />
-                <ScalarProperty Name="REASON" ColumnName="REASON" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

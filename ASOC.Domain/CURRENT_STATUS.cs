@@ -24,6 +24,7 @@ namespace ASOC.Domain
         public decimal ID_COMPLECT { get; set; }
         public decimal ID_STATUS { get; set; }
         public System.DateTime DATE_STATUS { get; set; }
+        public string REASON { get; set; }
     
         public virtual COMPONENT COMPONENT { get; set; }
         public virtual STATUS STATUS { get; set; }

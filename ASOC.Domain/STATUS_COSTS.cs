@@ -16,8 +16,8 @@ namespace ASOC.Domain
     {
         public decimal ID { get; set; }
         public decimal ID_CURRENT { get; set; }
-        public Nullable<decimal> COSTS { get; set; }
-        public string REASON { get; set; }
+        public Nullable<decimal> PRICE { get; set; }
+        public string COSTS { get; set; }
     
         public virtual CURRENT_STATUS CURRENT_STATUS { get; set; }
     }
