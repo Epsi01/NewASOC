@@ -27,16 +27,14 @@ namespace ASOC.WebUI.Controllers
             modelRepository = modelRepositoryParam;
         }
 
-        public ActionResult Details(int? page,int? id)
+        public ActionResult Details(int? page, int? id)
         {
             int pageSize = 10;
             int pageNumber = (page ?? 1);
-
             if (id == null)
             {
                 return HttpNotFound();
             }
-
             Entities db = new Entities();
             //COMPONENT comp = componentRepository.GetAllList().First(x => x.ID.Equals(id));
             COMPONENT comp = db.COMPONENT.Find(Convert.ToDecimal(id));
@@ -54,15 +52,13 @@ namespace ASOC.WebUI.Controllers
                 currentStatus = comp.CURRENT_STATUS.Where(x => x.ID_COMPLECT.Equals(Convert.ToDecimal(id)))
                         .OrderByDescending(x => x.DATE_STATUS).FirstOrDefault().STATUS.NAME,
                 currentCoast = comp.MODEL.PRICE.Where(x => x.ID_MODEL.Equals(Convert.ToDecimal(comp.ID_MODEL)))
-                        .OrderByDescending(x => x.DATE_ADD).FirstOrDefault().COAST,
+                        .OrderByDescending(x => x.DATE_ADD).FirstOrDefault().COST,
                 currentStatusList = comp.CURRENT_STATUS.ToPagedList(pageNumber, pageSize),
                 ID = comp.ID
             };
-
             return View(n);
-
-
         }
+
         public ActionResult StatusLog(int? id)
         {
             if (id != null)
@@ -71,7 +67,19 @@ namespace ASOC.WebUI.Controllers
                 return HttpNotFound();
         }
 
-
+        public ActionResult StatusDetails(int? id)
+        {
+            if (id != null)
+            {
+                Entities db = new Entities();
+                CURRENT_STATUS model = db.CURRENT_STATUS.Find(id);
+                if (model == null)
+                    return HttpNotFound();
+                return View(model);
+            }
+            else
+                return HttpNotFound();
+        }
 
         // GET: Index                  
         public ActionResult Index(int? page, ComponentViewModel modelData, int? modelID, int? typeID)
@@ -137,7 +145,7 @@ namespace ASOC.WebUI.Controllers
                     MODEL = item.MODEL,
                     TYPE = item.TYPE,
                     currentCoast = item.MODEL.PRICE.Where(x => x.ID_MODEL.Equals(item.ID_MODEL))
-                            .OrderByDescending(x => x.DATE_ADD).FirstOrDefault().COAST
+                            .OrderByDescending(x => x.DATE_ADD).FirstOrDefault().COST
                 });
             }
 

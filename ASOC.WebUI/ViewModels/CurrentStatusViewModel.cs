@@ -28,8 +28,7 @@ namespace ASOC.WebUI.ViewModels
                 {
                     cs.STATUS_COSTS.Add(new Domain.STATUS_COSTS
                     {
-                        ID_CURRENT = ID,
-                        COSTS = item
+                        ID_CURRENT = ID                        
                 });
                 }              
             }

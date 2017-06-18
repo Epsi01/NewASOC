@@ -75,7 +75,7 @@ namespace ASOC.WebUI.Controllers
                         PRICE = item.PRICE,
                         TYPE = item.TYPE,
                         currentCoast = item.PRICE.Where(x => x.ID_MODEL.Equals(item.ID))
-                            .OrderByDescending(x => x.DATE_ADD).FirstOrDefault().COAST
+                            .OrderByDescending(x => x.DATE_ADD).FirstOrDefault().COST
                     });
                 }                           
                
@@ -149,7 +149,7 @@ namespace ASOC.WebUI.Controllers
                 NAME = model.NAME,
                 TYPE = model.TYPE,
                 currentCoast = model.PRICE.Where(x => x.ID_MODEL.Equals(model.ID))
-                       .OrderByDescending(x => x.DATE_ADD).FirstOrDefault().COAST,
+                       .OrderByDescending(x => x.DATE_ADD).FirstOrDefault().COST,
                 PRICE = model.PRICE,
                 priceList = model.PRICE.ToPagedList(pageNumber, pageSize)
             };
@@ -173,7 +173,7 @@ namespace ASOC.WebUI.Controllers
             }
 
             decimal coast = model.PRICE.Where(x => x.ID_MODEL.Equals(model.ID))
-                       .OrderByDescending(x => x.DATE_ADD).FirstOrDefault().COAST;
+                       .OrderByDescending(x => x.DATE_ADD).FirstOrDefault().COST;
 
             ModelViewModel modelData = new ModelViewModel()
             {
@@ -192,7 +192,7 @@ namespace ASOC.WebUI.Controllers
             {
                 PRICE price = new PRICE()
                 {
-                    COAST = Convert.ToDecimal(modelData.currentCoast),
+                    COST = Convert.ToDecimal(modelData.currentCoast),
                     ID_MODEL = Convert.ToDecimal(modelData.ID),
                     DATE_ADD = DateTime.Now
                 };
@@ -250,7 +250,7 @@ namespace ASOC.WebUI.Controllers
             }
 
             decimal coast = model.PRICE.Where(x => x.ID_MODEL.Equals(model.ID))
-                       .OrderByDescending(x => x.DATE_ADD).FirstOrDefault().COAST;
+                       .OrderByDescending(x => x.DATE_ADD).FirstOrDefault().COST;
 
             ModelViewModel modelData = new ModelViewModel()
             {
@@ -284,7 +284,7 @@ namespace ASOC.WebUI.Controllers
                 {
                     PRICE price = new PRICE()
                     {
-                        COAST = Convert.ToDecimal(modelData.currentCoast),
+                        COST = Convert.ToDecimal(modelData.currentCoast),
                         ID_MODEL = Convert.ToDecimal(modelData.ID),
                         DATE_ADD = DateTime.Now
                     };
@@ -331,7 +331,7 @@ namespace ASOC.WebUI.Controllers
                                                 && x.ID_TYPE.Equals(modelData.ID_TYPE)).First();
                 PRICE price = new PRICE()
                 {
-                    COAST = Convert.ToDecimal(modelData.currentCoast),
+                    COST = Convert.ToDecimal(modelData.currentCoast),
                     ID_MODEL = Convert.ToDecimal(modelFind.ID),
                     DATE_ADD = DateTime.Now
                 };             

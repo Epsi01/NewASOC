@@ -1,4 +1,5 @@
 ﻿using ASOC.Domain;
+using ASOC.WebUI.Models;
 using PagedList;
 using System;
 using System.Collections.Generic;
@@ -18,12 +19,16 @@ namespace ASOC.WebUI.ViewModels
         public string currentFilter { get; set; }
         public SelectList typeList { get; set; }
         public SelectList statusList { get; set; }
-        public IPagedList<CostViewModel> componentList { get; set; }
+        public IPagedList<CostViewModel> componentList { get; set; }        
         public SelectList listType { get; set; }
         public SelectList listModel { get; set; }
         public Nullable<DateTime> firstDate { get; set; }
         public Nullable<DateTime> secondDate { get; set; }
         public int maxPrice { get; set; }
         public int minPrice { get; set; }
+        public IEnumerable<CostViewModel> compList { get; set; }
+        public string firstStringDate { get; set; }
+        public string secondStringDate { get; set; }
+        public List<Component> aaaa { get; set; }
     }
 }

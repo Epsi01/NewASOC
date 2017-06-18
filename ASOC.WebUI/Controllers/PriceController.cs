@@ -35,8 +35,8 @@ namespace ASOC.WebUI.Controllers
 
             IEnumerable<PRICE> priceLog = priceRepository.GetAllList();
 
-            int min = Convert.ToInt32(priceLog.Min(m => m.COAST));
-            int max = Convert.ToInt32(priceLog.Max(m => m.COAST));
+            int min = Convert.ToInt32(priceLog.Min(m => m.COST));
+            int max = Convert.ToInt32(priceLog.Max(m => m.COST));
 
             //Проверка на слайдер 
             if (price != null && price != "")
@@ -44,8 +44,8 @@ namespace ASOC.WebUI.Controllers
                 String[] numbers = price.Split(new char[] { '-' }, StringSplitOptions.RemoveEmptyEntries);
                 decimal num1 = Convert.ToDecimal(numbers[0]);
                 decimal num2 = Convert.ToDecimal(numbers[1]);
-                priceLog = priceLog.Where(m => m.COAST <= num2);
-                priceLog = priceLog.Where(m => m.COAST >= num1);
+                priceLog = priceLog.Where(m => m.COST <= num2);
+                priceLog = priceLog.Where(m => m.COST >= num1);
             }
 
             if (modelID != null)
@@ -58,7 +58,7 @@ namespace ASOC.WebUI.Controllers
 
                 if (isInt)
                 {
-                    priceLog = priceLog.Where(s => s.COAST.Equals(searchDigit)).
+                    priceLog = priceLog.Where(s => s.COST.Equals(searchDigit)).
                         OrderBy(s => s.DATE_ADD);
                 }
                 else                

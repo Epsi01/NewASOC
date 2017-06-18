@@ -29,7 +29,6 @@
          @foreach (var item in Model.currentStatusList)
          {
              <tr>
-
                  <td>
 
                      @if (item.STATUS.NAME == "В работе")
@@ -56,11 +55,10 @@
                          <span class="label label-pill label-info"> @Html.DisplayFor(modelItem => item.STATUS.NAME)</span>
 
                      }
-
                  </td>
                  <td>@item.DATE_STATUS</td>
                  <td>
-                     @Html.ActionLink("Подробнее", "Details", new { })
+                     @Html.ActionLink("Подробнее", "StatusDetails", new { id = item.ID })
                  </td>
              </tr>
          }

@@ -34,6 +34,7 @@ namespace ASOC.WebUI.Infrastructure
             kernel.Bind<IRepository<STATUS>>().To<Infrastructure.Repositories.StatusRepository>();
             kernel.Bind<IRepository<TYPE>>().To<Infrastructure.Repositories.TypeRepository>();
             kernel.Bind<IGetList>().To<Infrastructure.Concrete.GetList>();
+            kernel.Bind<IRepository<STATUS_COSTS>>().To<Repositories.StatusCostsRepository>();
         }
     }
 }

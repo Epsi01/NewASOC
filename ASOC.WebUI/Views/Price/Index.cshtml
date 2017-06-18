@@ -6,7 +6,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Таблица изменения цен</h2>
+<h2>Журнал изменений цен</h2>
 <p> @Html.ActionLink("Создать", "Create") </p>
 @using (Html.BeginForm("Index", "Price", FormMethod.Get))
 {
@@ -49,7 +49,7 @@
                 @Html.DisplayFor(modelItem => item.MODEL.NAME)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.COAST)
+                @Html.DisplayFor(modelItem => item.COST)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.DATE_ADD)
